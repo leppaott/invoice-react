@@ -4,6 +4,7 @@ import { Invoice } from './Invoice';
 import { Item } from './Item';
 import jsPDF = require('jspdf');
 import './styles.css';
+import ReactDOMServer = require('react-dom/server');
 
 class App extends Component<{}, Invoice> {
   private items: Array<Item> = [];
@@ -27,6 +28,7 @@ class App extends Component<{}, Invoice> {
   handleSubmit(e: FormEvent<HTMLInputElement>) {
     let pdf: jsPDF = new jsPDF();
     // todo
+    pdf.fromHTML(ReactDOMServer.renderToStaticMarkup(<App />), 30, 30);
     pdf.save('invoice.pdf');
   }
 
