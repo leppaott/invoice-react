@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component, FormEvent } from 'react';
 import { Invoice } from './Invoice';
 import { Item } from './Item';
+import jsPDF = require('jspdf');
 import './styles.css';
 
 class App extends Component<{}, Invoice> {
@@ -24,7 +25,9 @@ class App extends Component<{}, Invoice> {
   }
 
   handleSubmit(e: FormEvent<HTMLInputElement>) {
-
+    let pdf: jsPDF = new jsPDF();
+    // todo
+    pdf.save('invoice.pdf');
   }
 
   handleNewItem(e: FormEvent<HTMLInputElement>) {
@@ -45,10 +48,10 @@ class App extends Component<{}, Invoice> {
   }
 
   getItems(): Array<JSX.Element> {
-    return this.items.reduce((arr, cur) => {
-        arr.push(cur.element);
-        return arr;
-      }, new Array<JSX.Element>());
+    return this.items.reduce((arr, cur, index) => {
+      arr.push(cur.getAsElement(index));
+      return arr;
+    }, new Array<JSX.Element>());
   }
 
   getTotal(): string {
@@ -60,7 +63,7 @@ class App extends Component<{}, Invoice> {
   render() {
     return (
       <div id="form">
-        <table>
+        <table><tbody>
           <tr>
             <td>
               <input type="text" name="name" onChange={this.handleChange} /><br />
@@ -70,27 +73,21 @@ class App extends Component<{}, Invoice> {
             </td>
             <td>
               Invoice Number: {' '}
-                  <input type="text" name="invoiceNumber" onChange={this.handleChange} /><br />
+              <input type="text" name="invoiceNumber" onChange={this.handleChange} /><br />
               Invoice Date: {' '}
-                  <input type="text" name="invoiceDate" onChange={this.handleChange} /><br />
+              <input type="text" name="invoiceDate" onChange={this.handleChange} /><br />
               Due Date: {' '}
-                  <input type="text" name="dueDate" onChange={this.handleChange} /><br />
+              <input type="text" name="dueDate" onChange={this.handleChange} /><br />
             </td>
           </tr>
           <tr id="title">
-            <td>
-              Item
-                  </td>
-            <td>
-              Price
-                  </td>
+            <td>Item</td>
+            <td>Price</td>
           </tr>
           {this.getItems()}
           <tr>
             <td />
-            <td>
-              Total: {this.getTotal()}€
-                  </td>
+            <td>Total: {this.getTotal()}€</td>
           </tr>
           <tr>
             <td>
@@ -98,10 +95,10 @@ class App extends Component<{}, Invoice> {
               <input type="submit" value="Remove Last" onClick={this.handleDelete} />
             </td>
             <td>
-              <input type="submit" value="Submit" onClick={this.handleSubmit} />
+              <input type="submit" value="Get PDF" onClick={this.handleSubmit} />
             </td>
           </tr>
-        </table>
+        </tbody></table>
       </div>
     );
   }
