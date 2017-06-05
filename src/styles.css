@@ -1,0 +1,30 @@
+#form {
+    margin: auto;
+    padding: 30px;
+    border: 1px solid black;
+    line-height: 24px;
+}
+    
+#form table {
+    width: 100%;
+}
+    
+#form table td {
+    padding: 5px;
+    vertical-align: top;
+}
+    
+#form table tr td:nth-child(2) {
+    text-align: right;
+}
+
+#form table #title {
+    font-size: 110%;
+    font-weight: bold;
+}
+
+#form table #item {
+    line-height: 12px;
+}
+    
+    
